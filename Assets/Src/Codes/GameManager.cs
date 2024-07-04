@@ -28,8 +28,9 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = targetFrameRate;
     }
 
-    public void GameStart() {
+    public void GameStart(float x, float y) {
         playerId = (uint)Random.Range(0, 4);
+        player.gameObject.transform.position = new Vector2(x, y);
         player.deviceId = deviceId;
         player.gameObject.SetActive(true);
         hud.SetActive(true);

@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         inputVec.y = Input.GetAxisRaw("Vertical");
 
         // 위치 이동 패킷 전송 -> 서버로
-        NetworkManager.instance.SendLocationUpdatePacket(rigid.position.x, rigid.position.y);
+        NetworkManager.instance.SendLocationUpdatePacket(inputVec.x, inputVec.y);
     }
 
 
@@ -63,8 +63,8 @@ public class Player : MonoBehaviour
         // rigid.velocity = inputVec;
 
         // 위치 이동
-        Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
-        rigid.MovePosition(rigid.position + nextVec);
+        // Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
+        // rigid.MovePosition(rigid.position + nextVec);
     }
 
     // Update가 끝난이후 적용
@@ -84,5 +84,9 @@ public class Player : MonoBehaviour
         if (!GameManager.instance.isLive) {
             return;
         }
+    }
+
+    public void movePlayer(float x, float y) {
+        rigid.MovePosition(new Vector2(x, y));
     }
 }

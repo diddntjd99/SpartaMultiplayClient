@@ -172,6 +172,7 @@ public class NetworkManager : MonoBehaviour
             deviceId = GameManager.instance.deviceId,
             playerId = GameManager.instance.playerId,
             latency = GameManager.instance.latency,
+            frame = GameManager.instance.targetFrameRate,
         };
 
         // handlerId는 0으로 가정
@@ -253,8 +254,23 @@ public class NetworkManager : MonoBehaviour
         }
 
         if (response.data != null && response.data.Length > 0) {
-            if (response.handlerId == 0) {
-                GameManager.instance.GameStart();
+            if (response.handlerId == 0)
+            {
+                string jsonString = Encoding.UTF8.GetString(response.data);
+
+                // "x" 값 추출
+                int indexXStart = jsonString.IndexOf("\"x\":") + 4; // "x": 다음 인덱스에서 시작
+                int indexXEnd = jsonString.IndexOf(",", indexXStart); // 쉼표(,)가 나오는 곳까지
+                string xString = jsonString.Substring(indexXStart, indexXEnd - indexXStart);
+                float x = float.Parse(xString);
+
+                // "y" 값 추출
+                int indexYStart = jsonString.IndexOf("\"y\":") + 4; // "y": 다음 인덱스에서 시작
+                int indexYEnd = jsonString.IndexOf("}", indexYStart); // 닫는 중괄호(})가 나오는 곳까지
+                string yString = jsonString.Substring(indexYStart, indexYEnd - indexYStart);
+                float y = float.Parse(yString);
+
+                GameManager.instance.GameStart(x, y);
             }
             ProcessResponseData(response.data);
         }

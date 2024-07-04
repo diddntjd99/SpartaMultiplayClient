@@ -41,6 +41,9 @@ public class InitialPayload
     
     [ProtoMember(3, IsRequired = true)]
     public float latency { get; set; }
+
+    [ProtoMember(4, IsRequired = true)]
+    public float frame { get; set; }
 }
 
 [ProtoContract]
